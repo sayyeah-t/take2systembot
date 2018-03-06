@@ -1,0 +1,3 @@
+[default]
+channel = hoge
+commands = test,set_iksm
