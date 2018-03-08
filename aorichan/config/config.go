@@ -13,7 +13,6 @@ type AoriConfig struct {
 
 
 func (c *AoriConfig) AdditionalInit() bool {
-    println("override!")
     section, err := c.Cfg.GetSection("splatoon")
     if err != nil {
         print("cannot read section splatoon")
@@ -39,6 +38,6 @@ func (c *AoriConfig) AdditionalInit() bool {
         return false
     }
     c.Commands = commands.Strings(",")
-    
+
     return true
 }
