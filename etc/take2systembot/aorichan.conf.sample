@@ -4,4 +4,4 @@ token = huga
 [splatoon]
 iksmchannel = channel1
 workchannels = channel2,channel3
-commands = test,gachi
+#commands = !test,!gachi
