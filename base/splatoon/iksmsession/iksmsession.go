@@ -1,30 +1,45 @@
 package iksm
 
 import (
-    ""
+    "errors"
 )
 
-testPath = "aaaaaaa"
+
 
 var (
     Iksm = ""
+    filePath = ""
 )
 
 func DumpSessionToken() {
     print("dump session token: " + Iksm)
 }
 
-func readIksmFromFile() {
-
+func readIksmFromFile() error {
+    if filePath == ""{
+        return errors.New("file path is empty")
+    }
+    return nil
 }
 
-func WriteIksmToFile() {
+func SetDumpPath(path string) {
+    filePath = path
+}
+
+func writeIksmToFile() error {
     print("Write file...")
+    if filePath == ""{
+        return errors.New("file path is empty")
+    }
+    return nil
 }
 
 func SetIksm(token string) {
     if Iksm != token {
         Iksm = token
     }
-    WriteTokenToFile
+    err := writeIksmToFile()
+    if err != nil {
+        print(err.Error())
+    }
 }

@@ -1,40 +1,49 @@
 package bot
 
-import(
+import (
     "errors"
-    "github.com/sayyeah-t/base/splatoon/iksmsession"
-    "github.com/sayyeah-t/base/splatoon/schedule"
+    "github.com/sayyeah-t/take2systembot/base/splatoon/iksmsession"
+    //"github.com/sayyeah-t/base/splatoon/schedule"
 )
 
 var (
-    iksmCommand = {
+    iksmCommand  = []string{
         "!test",
         "!set_iksm",
     }
-    generalCommand = {
+    generalCommand = []string{
         "!test",
         "ガチマ",
         "リグマ",
         "!restart",
-        "リスタート"
+        "リスタート",
     }
 )
 
 
+func iksmAction(cmd []string) (string, error) {
+    var msg string
+    var err error
 
-func iksmAction(cmd string) string, error{
     switch cmd[0] {
     case "!set_iksm":
         if len(cmd) != 2{
-            return "", error.New("invalid subcommand")
+            msg = ""
+            err = errors.New("invalid subcommand")
+            return msg, err
         }
         // Do iksm
-        return "ToDo: set iksm_session", nil
+        iksm.SetIksm(cmd[1])
+        msg = "Succeeded to set iksm_session"
+        err = nil
     case "!test":
-        return "テスト", nil
+        print("iksm_session: " + iksm.Iksm)
+        msg = iksm.Iksm
+        err = nil
     }
+    return msg, err
 }
 
-func generalAction(cmd []string) string error{
+func generalAction(cmd []string) (string, error) {
     return "未実装", nil
 }

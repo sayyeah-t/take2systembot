@@ -4,24 +4,25 @@ import(
     "os"
     "os/signal"
     "syscall"
-    "strings"
-    "github.com/sayyeah-t/base/util"
-    "github.com/sayyeah-t/aorichan/config"
+    "errors"
+    //"strings"
+    "github.com/sayyeah-t/take2systembot/base/util"
+    "github.com/sayyeah-t/take2systembot/aorichan/config"
     "github.com/bwmarrin/discordgo"
 )
 
-type BotInfo struct {
-    Conf config.AoriConfig
-}
 
-func (b *BotInfo) Init(tk string, ch string){
-    b.Conf.Init("aorichan.conf")
-    b.Conf.AdditionalInit()
+var Conf config.AoriConfig
+
+
+func Init(){
+    Conf.Init("aorichan.conf")
+    Conf.AdditionalInit()
     //splatnet2.Init()
 }
 
-func (b *BotInfo) Run() {
-    dg, err := discordgo.New("Bot " + b.Conf.Token)
+func Run() {
+    dg, err := discordgo.New("Bot " + Conf.Token)
     if err != nil {
         println("error creating Discord session,", err)////////////////
         return
@@ -41,13 +42,13 @@ func (b *BotInfo) Run() {
     dg.Close()
 }
 
-func (b *BotInfo) DumpConfig(){
+func DumpConfig(){
     println("=== Bot Configuration ===")
-    println("Bot Token: ", b.Token)
+    println("Bot Token: ", Conf.Token)
     println("=========================")
 }
 
-func (b *BotInfo) onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate)
+func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
     if m.Author.ID == s.State.User.ID {
         return
     }
@@ -60,26 +61,33 @@ func (b *BotInfo) onMessageCreate(s *discordgo.Session, m *discordgo.MessageCrea
     s.ChannelMessageSend(m.ChannelID, msg)
 }
 
-func (b *BotInfo) getMassage(channel string, commands []string) string, error {
-    if channel == b.Conf.IksmChannel {
-        err := util.ValidateCommand(command[0], iksmCommand)
+func getMessage(channel string, commands []string) (string, error) {
+    if channel == Conf.IksmChannel {
+        err := util.ValidateCommand(commands[0], iksmCommand)
         if err != nil {
             println(err.Error())
             return "", err
         }
-
+        msg, err := iksmAction(commands)
+        if err != nil {
+            println(err.Error())
+            return "", err
+        }
+        return msg, nil
     }
 
-    for _, c := range b.Conf.WorkChannels {
+    for _, c := range Conf.WorkChannels {
         if channel == c {
-            err := util.ValidateCommand(command[0], generalCommand)
+            err := util.ValidateCommand(commands[0], generalCommand)
             if err != nil {
                 println(err.Error())
-                return msg, err
+                return "", err
             }
-
+            return "test", nil
         }
     }
+
+    return "", errors.New("Matched no channels")
 }
 /*
 func ruleMessage(commands []string) string {

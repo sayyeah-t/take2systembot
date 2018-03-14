@@ -32,12 +32,14 @@ func (c *AoriConfig) AdditionalInit() bool {
     }
     c.WorkChannels = workchannels.Strings(",")
 
+/*
     commands, err := section.GetKey("commands")
     if err != nil {
         println(err.Error())
         return false
     }
     c.Commands = commands.Strings(",")
+*/
 
     return true
 }

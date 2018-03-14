@@ -4,7 +4,8 @@ import (
     "github.com/go-ini/ini"
 )
 
-var path = "C:/Program Files/Git/etc/take2systembot/"
+//var path = "C:/Program Files/Git/etc/take2systembot/"
+var path = "/etc/take2systembot/"
 
 type BaseConfig struct {
     IsLoaded bool

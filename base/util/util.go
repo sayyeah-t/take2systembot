@@ -16,9 +16,9 @@ func ParseCommand(msg string) []string {
     return commands
 }
 
-func ValidateCommand(msg string, enabledcommands []string) error {
+func ValidateCommand(command string, enabledcommands []string) error {
     for _, c := range enabledcommands {
-        if commands[0] == c {
+        if command == c {
             return nil
         }
     }
